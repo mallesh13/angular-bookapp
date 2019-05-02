@@ -1,36 +1,46 @@
 <div class="container" style="width:40%">
-    <h4 class="text-center">Login Form</h4>
-    <form>
+    <h4 class="text-center">SignUp Form</h4>
+<!-- {{customer | json}} -->
+    <!-- {{customerForm.value | json}} -->
+    <form (ngSubmit)="registerNewCustomer()" #customerForm="ngForm">
         <div class="form-group">
                 <label class="form-label">Name:</label>
-                <input type="text" class="form-control" required/> 
+                <input type="text" class="form-control" required [(ngModel)]="customer.name" name="customer_name" #name="ngModel" [class.is-invalid]="name.touched && name.invalid"/> 
+                <div class="text-danger" [class.d-none]="name.valid || name.untouched">
+                        Name is required
+                </div>
         </div>
         <div class="form-group">
                 <label class="form-label">Email Id:</label>
-                <input type="email" class="form-control" required/> 
+                <input type="email" class="form-control" required [(ngModel)]="customer.email" name="email" #email="ngModel" [class.is-invalid]="email.touched && email.invalid"/> 
+                <div class="text-danger" [class.d-none]="email.valid || email.untouched">Email-id required</div>
         </div>
         <div class="form-group">
                 <label class="form-label">Password:</label>
-                <input type="password" class="form-control" required/> 
+                <input type="password" class="form-control" required [(ngModel)]="customer.password" name="password"/> 
         </div>
-         <div class="form-group">
+        <div class="form-group">
                 <label class="form-label">Contact:</label>
-                <input type="number" class="form-control" required/> 
+                <input type="number" class="form-control" required [(ngModel)]="customer.contact" name="contact" pattern="^\d{10}$" #phone="ngModel"
+                        [class.is-invalid]="phone.touched && phone.invalid"/>
+                <div *ngIf="phone.errors && (phone.touched)">
+                        <div class="text-danger" *ngIf="phone.errors?.required">phone no. is required</div>
+                        <div class="text-danger" *ngIf="phone.errors?.pattern">phone no. must be 10 digits</div>
+                </div>
         </div>
         <div class="form-group" >
                <label class="form-label">Gender:</label>&nbsp;&nbsp;
-               <input type="radio" name="gender" value="Male" class="from-check-input"/>&nbsp; Male &nbsp;&nbsp;
-               <input type="radio" name="gender" value="Female" class="from-check-input"/>&nbsp;Female  
+               <input type="radio" name="gender" value="Male" class="from-check-input" [(ngModel)]="customer.gender" />&nbsp; Male &nbsp;&nbsp;
+               <input type="radio" name="gender" value="Female" class="from-check-input" [(ngModel)]="customer.gender"/>&nbsp;Female  
         </div>
-        <div></div>
         <div class="form-group">
                 <label class="form-label">Address Line1:</label>
-                <input type="text" class="form-control" required/>
+                <input type="text" class="form-control" required [(ngModel)]="customer.address.addressLine1" name="addressLine1"/>
         </div>
         <div class="form-row" >
-        <div class="form-group col-5">
+        <div class="form-group col-4">
                 <label class="form-label">State:</label>
-                <select required class="form-control">
+                <select required class="form-control" [(ngModel)]="customer.address.State" name="state">
                         <option value="">--select--</option>
                         <option value="Telangana">Telangana</option>
                         <option value="Karnataka">Karnataka</option>
@@ -40,7 +50,7 @@
         </div>
         <div class="form-group col">
                 <label class="form-label">City:</label>
-                <select required class="form-control">
+                <select required class="form-control" [(ngModel)]="customer.address.city" name="city">
                         <option value="">--select--</option>
                         <option value="Hyderabad">Hyderabad</option>
                         <option value="Mumbai">Mumbai</option>
@@ -50,10 +60,17 @@
         </div>
         <div class="form-group col">
                 <label class="form-label">Postal Code:</label>
-                <input type="number" class="form-control" required>
+                <input type="number" class="form-control" required [(ngModel)]="customer.address.postalCode" name="postalCode"
+                pattern="^\d{6}$" #pincode="ngModel"
+                [class.is-invalid]="pincode.touched && pincode.invalid"/>
+
+                <div *ngIf="pincode.errors && (pincode.touched)">
+                        <div class="text-danger" *ngIf="pincode.errors?.required">postalCode is required</div>
+                        <div class="text-danger" *ngIf="pincode.errors?.pattern">postalCode must be 6    digits</div>
+                </div>
         </div>
         </div>
-        <button type="button" class="btn btn-secondary">Sign Up</button><br>
+        <button type="submit" class="btn btn-secondary" [disabled]="customerForm.form.invalid">Sign Up</button><br>
     </form>
 
 </div>
